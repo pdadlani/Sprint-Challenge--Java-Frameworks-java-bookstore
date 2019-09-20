@@ -19,7 +19,7 @@ public class Book extends Auditable {
 
     private String ISBN;
 
-    private Integer copy;
+    private int copy;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("book")
@@ -28,11 +28,10 @@ public class Book extends Auditable {
     public Book() {
     }
 
-    public Book(String booktitle, String ISBN, Integer copy, List<BooksAuthors> booksAuthors) {
+    public Book(String booktitle, String ISBN, int copy) {
         this.booktitle = booktitle;
         this.ISBN = ISBN;
         this.copy = copy;
-        this.booksAuthors = booksAuthors;
     }
 
     public long getBookid() {
@@ -59,11 +58,11 @@ public class Book extends Auditable {
         this.ISBN = ISBN;
     }
 
-    public Integer getCopy() {
+    public int getCopy() {
         return copy;
     }
 
-    public void setCopy(Integer copy) {
+    public void setCopy(int copy) {
         this.copy = copy;
     }
 

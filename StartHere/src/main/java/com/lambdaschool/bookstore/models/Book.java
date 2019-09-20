@@ -1,29 +1,39 @@
 package com.lambdaschool.bookstore.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiModel(value = "Book", description = "The Book Entity")
 @Entity
-@Table(name = "books")
+@Table(name = "book")
 public class Book extends Auditable {
 
+    @ApiModelProperty(name = "bookid", value = "Primary key for book", required = true, example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long bookid;
 
     @Column(nullable = false)
+    @ApiModelProperty(name = "booktitle", value = "Title of book", required = true, example = "Pride & Prejudice")
     private String booktitle;
 
+    @ApiModelProperty(name = "ISBN", value = "ISBN for book", required = true, example = "9788932404493")
     private String ISBN;
 
-    private int copy;
+    @ApiModelProperty(name = "copy", value = "Copyright Date", example = "1813")
+    private Integer copy;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @ApiModelProperty(name = "authorsbooks", value = "Authors of book", required = true, example = "Author 1, Author 2")
+    @ManyToMany
+    @JoinTable(name = "Authored", joinColumns = {@JoinColumn(name = "bookid")}, inverseJoinColumns = {@JoinColumn(name = "authorid")})
     @JsonIgnoreProperties("book")
-    private List<BooksAuthors> booksAuthors = new ArrayList<>();
+    private List<Author> authors = new ArrayList<>();
 
     public Book() {
     }
@@ -58,7 +68,7 @@ public class Book extends Auditable {
         this.ISBN = ISBN;
     }
 
-    public int getCopy() {
+    public Integer getCopy() {
         return copy;
     }
 
@@ -66,11 +76,11 @@ public class Book extends Auditable {
         this.copy = copy;
     }
 
-    public List<BooksAuthors> getBooksAuthors() {
-        return booksAuthors;
+    public List<Author> getAuthors() {
+        return authors;
     }
 
-    public void setBooksAuthors(List<BooksAuthors> booksAuthors) {
-        this.booksAuthors = booksAuthors;
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 }

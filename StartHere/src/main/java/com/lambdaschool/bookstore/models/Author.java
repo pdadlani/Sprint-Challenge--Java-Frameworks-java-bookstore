@@ -1,26 +1,33 @@
 package com.lambdaschool.bookstore.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiModel(value = "Authors", description = "The Author Entity")
 @Entity
-@Table(name = "authors")
+@Table(name = "author")
 public class Author extends Auditable {
+    @ApiModelProperty(name = "authorid", value = "Primary key for Author", required = true, example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long authorid;
 
     @Column(nullable = false)
+    @ApiModelProperty(name = "lastname", value = "Last name of author", required = true, example = "Austen")
     private String lastname;
 
+    @ApiModelProperty(name = "firstname", value = "First name of author", required = true, example = "Jane")
     private String firstname;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @ApiModelProperty(name = "authorsbooks", value = "Authors of book", required = true, example = "Author 1, Author 2")
+    @ManyToMany(mappedBy = "author")
     @JsonIgnoreProperties("author")
-    private List<BooksAuthors> booksAuthors = new ArrayList<>();
+    private List<Book> books = new ArrayList<>();
 
     public Author() {
     }
@@ -54,11 +61,11 @@ public class Author extends Auditable {
         this.firstname = firstname;
     }
 
-    public List<BooksAuthors> getBooksAuthors() {
-        return booksAuthors;
+    public List<Book> getBooksAuthors() {
+        return books;
     }
 
-    public void setBooksAuthors(List<BooksAuthors> booksAuthors) {
-        this.booksAuthors = booksAuthors;
+    public void setBooksAuthors(List<Book> books) {
+        this.books = books;
     }
 }

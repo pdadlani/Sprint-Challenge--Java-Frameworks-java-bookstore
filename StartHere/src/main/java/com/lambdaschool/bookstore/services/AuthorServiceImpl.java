@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +16,16 @@ public class AuthorServiceImpl implements AuthorService {
     AuthorRepository authorrepo;
 
     @Override
-    public List<Author> findAll(Pageable pageable) {
+    public List<Author> findAllAuthors(Pageable pageable) {
         List<Author> authors = new ArrayList<>();
         authorrepo.findAll(pageable).iterator().forEachRemaining(authors::add);
         return authors;
+    }
+
+    @Override
+    public Author findAuthorById(long id) {
+        Author foundAuthor = authorrepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Long.toString(id)));
+        return foundAuthor;
     }
 }

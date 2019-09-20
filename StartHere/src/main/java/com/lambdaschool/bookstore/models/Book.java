@@ -3,7 +3,6 @@ package com.lambdaschool.bookstore.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.models.auth.In;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,11 +28,15 @@ public class Book extends Auditable {
     @ApiModelProperty(name = "copy", value = "Copyright Date", example = "1813")
     private Integer copy;
 
-    @ApiModelProperty(name = "authorsbooks", value = "Authors of book", required = true, example = "Author 1, Author 2")
+//    @ApiModelProperty(name = "authorsbooks", value = "Authors of book", required = true, example = "Author 1, Author 2")
     @ManyToMany
-    @JoinTable(name = "Authored", joinColumns = {@JoinColumn(name = "bookid")}, inverseJoinColumns = {@JoinColumn(name = "authorid")})
-    @JsonIgnoreProperties("book")
+    @JoinTable(name = "authored", joinColumns = {@JoinColumn(name = "bookid")}, inverseJoinColumns = {@JoinColumn(name = "authorid")})
+    @JsonIgnoreProperties("books")
     private List<Author> authors = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("book")
+    private List<Authored> authored = new ArrayList<>();
 
     public Book() {
     }

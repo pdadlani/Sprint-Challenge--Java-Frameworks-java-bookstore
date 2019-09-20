@@ -24,9 +24,9 @@ public class Author extends Auditable {
     @ApiModelProperty(name = "firstname", value = "First name of author", required = true, example = "Jane")
     private String firstname;
 
-    @ApiModelProperty(name = "authorsbooks", value = "Authors of book", required = true, example = "Author 1, Author 2")
-    @ManyToMany(mappedBy = "author")
-    @JsonIgnoreProperties("author")
+//    @ApiModelProperty(name = "authorsbooks", value = "Authors of book", required = true, example = "Author 1, Author 2")
+    @ManyToMany(mappedBy = "authors")
+    @JsonIgnoreProperties("authors")
     private List<Book> books = new ArrayList<>();
 
     public Author() {
